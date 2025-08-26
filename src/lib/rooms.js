@@ -1,0 +1,51 @@
+export const rooms = [
+  {
+    id: "room-01",
+    name: "Room 01",
+    slug: "room-01",
+    capacity: 2,
+    beds: "1 large double bed",
+    amenities: ["A/C", "Private bathroom", "Kitchen access", "Wi‑Fi", "Wardrobe"],
+    images: [
+      "/images/rooms/room1/605593471.jpg",
+      "/images/rooms/room1/605593530.jpg",
+      "/images/rooms/room1/605593706 (1).jpg",
+      "/images/rooms/room1/605593732 (1).jpg",
+      "/images/rooms/room1/605593779.jpg",
+      "/images/rooms/room1/1.11.jpg",
+    ],
+    vibe: "16 m² • Private bathroom • Air‑conditioning • Kitchen • Garden/lounge access",
+  },
+  {
+    id: "room-02",
+    name: "Room 02",
+    slug: "room-02",
+    capacity: 2,
+    beds: "1 large double bed",
+    amenities: ["A/C", "Private bathroom", "Private entrance", "Kitchen access", "Wi‑Fi"],
+    images: [
+      "/images/rooms/room2/2.1.jpg",
+      "/images/rooms/room2/2.2.jpg",
+      "/images/rooms/room2/2.3.jpg",
+      "/images/rooms/room2/2.4.jpg",
+    ],
+    vibe: "16 m² • Private bathroom • Private entrance • Kitchen • Living room",
+  },
+  {
+    id: "room-03",
+    name: "Room 03",
+    slug: "room-03",
+    capacity: 2,
+    beds: "1 extra‑large double bed",
+    amenities: ["A/C", "Private bathroom", "Balcony", "Kitchen access", "Wi‑Fi"],
+    images: [
+      "/images/rooms/room3/3.1.jpg",
+      "/images/rooms/room3/3.2.jpg",
+      "/images/rooms/room3/3.3.jpg",
+      "/images/rooms/room3/3.4.jpg",
+      "/images/rooms/room3/3.5.jpg",
+    ],
+    vibe: "20 m² • Private bathroom • Balcony • Kitchen • Garden view",
+  },
+];
+
