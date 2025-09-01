@@ -7,7 +7,7 @@ export const reviews = [
   {
     author: "Elena K",
     text: "Everything is great. The shower is gorgeous, I really liked it, I want the same one now with flowers and sunlight))\nEverything is clean and tidy. There were days when we were alone in the villa, it turns out that the whole villa is at our disposal for the price of a room. There is a refrigerator, a stove and a washing machine. The water is warm, good and the pressure is good.\nThe owner is very friendly, he helped us buy train tickets. He offered to organize excursions or a taxi, but I mainly ordered everything through PickMe. The villa is located a little further from the road, which is great, there is no road noise and dust. The air conditioning works well. The territory of the villa is beautiful and well-kept. The owner is for separate waste collection. Beautiful birds fly to the territory and chipmunks run around. Once we saw monkeys on the territory and on the road to the beach. Monitor lizards also crossed the road. We walked along the beach with turtles to the beach, the road is beautiful and interesting. Turtles swim along the entire coast where there are stones with algae, they eat them. Overall the villa is great, price 🔥, owner 😎 everything is super. Thank you.",
-    ratings: null,
+    ratings:  { rooms: 5, service: 5, location: 5 },
   },
   {
     author: "Айгуль Сунагатуллина",

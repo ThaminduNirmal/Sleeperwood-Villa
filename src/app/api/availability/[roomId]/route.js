@@ -2,7 +2,7 @@ import { roomIcs } from "@/lib/availabilityConfig";
 import { fetchText, parseIcsToRanges } from "@/lib/ics";
 
 export async function GET(req, { params }) {
-  const roomId = params.roomId;
+  const { roomId } = await params;
   const url = roomIcs[roomId];
   if (!url) {
     return new Response(JSON.stringify({ roomId, booked: [] }), { headers: { "content-type": "application/json" } });

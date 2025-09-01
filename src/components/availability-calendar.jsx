@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 
-export default function AvailabilityCalendar({ roomId }) {
+export default function AvailabilityCalendar({ roomId, value, onChange }) {
   const [booked, setBooked] = useState([]);
   useEffect(function() {
     let active = true;
@@ -20,10 +20,15 @@ export default function AvailabilityCalendar({ roomId }) {
       return false;
     };
   }, [booked]);
-  const [range, setRange] = useState({ from: undefined, to: undefined });
+  const [internalRange, setInternalRange] = useState({ from: undefined, to: undefined });
+  const range = value || internalRange;
+  function handleSelect(next) {
+    if (onChange) onChange(next);
+    else setInternalRange(next);
+  }
   return (
     <div className="border rounded-lg">
-      <Calendar mode="range" selected={range} onSelect={setRange} disabled={disabled} initialFocus />
+      <Calendar mode="range" selected={range} onSelect={handleSelect} disabled={disabled} initialFocus />
       <div className="px-3 pb-3 text-xs text-muted-foreground">Live availability on Booking.com</div>
     </div>
   );
