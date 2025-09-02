@@ -34,11 +34,11 @@ export default function Footer() {
             <div className="font-semibold mb-2" style={{ fontFamily: "var(--font-display)" }}>Stay</div>
             <ul className="space-y-2">
               <li><Link href="/">Home</Link></li>
-              <li><Link href="/rooms">Rooms</Link></li>
-              <li><Link href="/experiences">Experiences</Link></li>
-              <li><Link href="/gallery">Gallery</Link></li>
-              <li><Link href="/location">Location</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
+              <li><Link href="/#rooms">Rooms</Link></li>
+              <li><Link href="/#experiences">Experiences</Link></li>
+              <li><Link href="/#gallery">Gallery</Link></li>
+              <li><Link href="/#location">Location</Link></li>
+              <li><Link href="/#contact">Contact</Link></li>
             </ul>
           </div>
 

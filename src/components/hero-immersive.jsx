@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import BookingCta from "@/components/booking-cta";
 
 export default function HeroImmersive() {
   const [show, setShow] = useState(false);
@@ -24,8 +23,12 @@ export default function HeroImmersive() {
             <h1 className="text-white text-3xl md:text-5xl lg:text-7xl leading-tight font-semibold whitespace-nowrap" style={{ fontFamily: "var(--font-display)", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>Unwind in wood and greenery.</h1>
             <p className="mt-4 text-white/90 text-lg md:text-xl lg:text-2xl max-w-2xl" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.45)" }}>Moments from Unawatuna Beach.</p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 pb-[env(safe-area-inset-bottom)]">
-              <BookingCta className="h-12 min-w-[220px] px-6 shadow-lg transition-transform will-change-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">Check availability on Booking.com</BookingCta>
-              <a className="inline-flex h-12 min-w-[220px] px-6 items-center justify-center rounded-md border border-white/80 text-white transition-colors transition-transform hover:bg-white/10 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent" href="/rooms">View rooms</a>
+              <a
+                href="#rooms"
+                className="inline-flex h-12 sm:h-14 min-w-[220px] px-7 sm:px-8 items-center justify-center rounded-md bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg transition-transform will-change-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+              >
+                Check availability
+              </a>
             </div>
           </div>
         </div>

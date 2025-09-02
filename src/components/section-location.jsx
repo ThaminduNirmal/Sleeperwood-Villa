@@ -1,6 +1,6 @@
 export default function SectionLocation() {
   return (
-    <section id="location" className="mx-auto max-w-6xl px-4 pb-20">
+    <section id="location" className="mx-auto max-w-7xl px-4 pb-20">
       <div className="relative overflow-hidden rounded-xl border shadow-sm">
         <div className="aspect-[16/9] w-full relative">
           <iframe

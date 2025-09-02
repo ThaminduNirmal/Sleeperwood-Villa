@@ -1,4 +1,5 @@
 export const rooms = [
+  // Order left-to-right: Room 01, Room 02, Room 03
   {
     id: "room-01",
     name: "Room 01",
@@ -7,14 +8,12 @@ export const rooms = [
     beds: "1 large double bed",
     amenities: ["A/C", "Private bathroom", "Kitchen access", "Wi‑Fi", "Wardrobe"],
     images: [
-      "/images/rooms/room1/605593471.jpg",
-      "/images/rooms/room1/605593530.jpg",
-      "/images/rooms/room1/605593706 (1).jpg",
-      "/images/rooms/room1/605593732 (1).jpg",
-      "/images/rooms/room1/605593779.jpg",
-      "/images/rooms/room1/1.11.jpg",
+      "/images/rooms/room1/1.jpeg",
+      "/images/rooms/room1/2.jpeg",
+      "/images/rooms/room1/3.jpeg",
+      "/images/rooms/room1/4.jpeg",
     ],
-    vibe: "16 m² • Private bathroom • Air‑conditioning • Kitchen • Garden/lounge access",
+    vibe: "16 m² • Bright & cozy • A/C • Private bathroom • Garden/lounge access",
   },
   {
     id: "room-02",
@@ -24,12 +23,12 @@ export const rooms = [
     beds: "1 large double bed",
     amenities: ["A/C", "Private bathroom", "Private entrance", "Kitchen access", "Wi‑Fi"],
     images: [
-      "/images/rooms/room2/2.1.jpg",
-      "/images/rooms/room2/2.2.jpg",
-      "/images/rooms/room2/2.3.jpg",
-      "/images/rooms/room2/2.4.jpg",
+      "/images/rooms/room2/1.jpeg",
+      "/images/rooms/room2/2.jpeg",
+      "/images/rooms/room2/3.jpeg",
+      "/images/rooms/room2/4.jpeg",
     ],
-    vibe: "16 m² • Private bathroom • Private entrance • Kitchen • Living room",
+    vibe: "16 m² • Private entrance • A/C • Kitchen & living access • Quiet courtyard",
   },
   {
     id: "room-03",
@@ -39,13 +38,12 @@ export const rooms = [
     beds: "1 extra‑large double bed",
     amenities: ["A/C", "Private bathroom", "Balcony", "Kitchen access", "Wi‑Fi"],
     images: [
-      "/images/rooms/room3/3.1.jpg",
-      "/images/rooms/room3/3.2.jpg",
-      "/images/rooms/room3/3.3.jpg",
-      "/images/rooms/room3/3.4.jpg",
-      "/images/rooms/room3/3.5.jpg",
+      "/images/rooms/room3/1.jpeg",
+      "/images/rooms/room3/2.jpeg",
+      "/images/rooms/room3/3.jpeg",
+      "/images/rooms/room3/4.jpeg",
     ],
-    vibe: "20 m² • Private bathroom • Balcony • Kitchen • Garden view",
+    vibe: "20 m² • Balcony for morning coffee • A/C comfort • Garden view • Kitchen access",
   },
 ];
 

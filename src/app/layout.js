@@ -23,6 +23,11 @@ const playfair = Playfair_Display({
 export const metadata = {
   title: "Sleeperwood Villa — Wood, waves, and warm hospitality",
   description: "Light, wood, and green near Unawatuna Beach. Book on Booking.com.",
+  icons: {
+    icon: "/TAB.png",
+    shortcut: "/TAB.png",
+    apple: "/TAB.png",
+  },
 };
 
 export default function RootLayout({ children }) {

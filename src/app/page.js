@@ -18,7 +18,7 @@ export default function Home() {
       <div id="experiences" />
       <ValueCards />
 
-      <section id="rooms" className="mx-auto max-w-6xl px-4 pb-16">
+      <section id="rooms" className="mx-auto max-w-7xl px-4 pb-16">
         <h2 className="text-2xl font-semibold mb-4" style={{ fontFamily: "var(--font-display)" }}>Featured rooms</h2>
         <div className="grid gap-6 md:grid-cols-3">
           {rooms.map(function(r) { return <RoomCard key={r.id} room={r} />; })}

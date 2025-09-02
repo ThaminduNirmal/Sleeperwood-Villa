@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { buildBookingUrl } from "@/lib/bookingLink";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Header() {
@@ -21,8 +22,9 @@ export default function Header() {
   return (
     <header className={(atTop ? "bg-transparent border-none shadow-none backdrop-blur-0 " : "bg-white/60 border-b border-border shadow-sm backdrop-blur-md ") + "fixed top-0 left-0 right-0 z-50 transition-colors"}>
       <div suppressHydrationWarning className={(mounted ? (atTop ? "text-white " : "text-foreground ") : "") + "mx-auto max-w-6xl px-4 py-3 flex items-center justify-between"}>
-        <Link href="/" className="font-semibold text-lg" style={{ fontFamily: "var(--font-display)" }}>
-          Sleeperwood Villa
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.PNG" alt="Sleeperwood logo" width={40} height={40} className="rounded-sm object-cover" priority unoptimized />
+          <span className="hidden sm:inline font-semibold text-lg" style={{ fontFamily: "var(--font-display)" }}>Sleeperwood Villa</span>
         </Link>
         <nav className="hidden md:flex gap-6 text-sm">
           <a href="#rooms">Rooms</a>
@@ -37,7 +39,7 @@ export default function Header() {
           variant={atTop ? "ghost" : "default"}
           className={(mounted ? (atTop ? "text-white" : "bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90") : "")}
         >
-          Check availability
+          View on Booking.com
         </Button>
       </div>
     </header>

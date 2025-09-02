@@ -37,7 +37,7 @@ export default function SectionGallery() {
   }
 
   return (
-    <section id="gallery" className="mx-auto max-w-6xl px-4 py-12">
+    <section id="gallery" className="mx-auto max-w-7xl px-4 py-12">
       <h2 className="text-2xl font-semibold mb-4" style={{ fontFamily: "var(--font-display)" }}>Gallery</h2>
       <div className="columns-2 md:columns-3 lg:columns-4 gap-x-4">
         {items.map(function (src, idx) {
@@ -48,7 +48,7 @@ export default function SectionGallery() {
               className="group relative mb-4 inline-block w-full overflow-hidden rounded-xl border shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--primary)]/40 break-inside-avoid"
               aria-label="Open image in lightbox"
             >
-              <img src={src} alt="Gallery image" loading="lazy" className="w-full h-auto transition-transform duration-300 group-hover:scale-[1.03]" />
+              <img src={src} alt="Gallery image" loading="lazy" className="block w-full h-auto align-middle transition-transform duration-300 group-hover:scale-[1.03]" />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
           );
