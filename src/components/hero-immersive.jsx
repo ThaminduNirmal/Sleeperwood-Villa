@@ -17,12 +17,12 @@ export default function HeroImmersive() {
         preload="none"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/40" />
-      <div className="relative z-10 h-full">
-        <div className="relative mx-auto max-w-7xl h-full px-4 pt-28 md:pt-36">
-          <div className="md:absolute md:bottom-16 md:left-4 lg:left-8 max-w-3xl transition-all duration-700" style={{ opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(12px)" }}>
-            <h1 className="text-white text-3xl md:text-5xl lg:text-7xl leading-tight font-semibold whitespace-nowrap" style={{ fontFamily: "var(--font-display)", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>Unwind in wood and greenery.</h1>
-            <p className="mt-4 text-white/90 text-lg md:text-xl lg:text-2xl max-w-2xl" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.45)" }}>Moments from Unawatuna Beach.</p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-3 pb-[env(safe-area-inset-bottom)]">
+      <div className="relative z-10 h-full flex items-center">
+        <div className="relative mx-auto max-w-7xl w-full px-4 md:pt-36">
+          <div className="md:absolute md:bottom-16 md:left-4 lg:left-8 max-w-3xl transition-all duration-700 text-center md:text-left flex flex-col items-center md:items-start justify-center" style={{ opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(12px)" }}>
+            <h1 className="text-white text-3xl md:text-5xl lg:text-7xl leading-tight font-semibold md:whitespace-nowrap" style={{ fontFamily: "var(--font-display)", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>Unwind in wood and greenery.</h1>
+            <p className="mt-4 text-white/90 text-lg md:text-xl lg:text-2xl max-w-2xl mx-auto md:mx-0" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.45)" }}>Moments from Unawatuna Beach.</p>
+            <div className="mt-8 flex flex-col sm:flex-row items-center md:items-start gap-3 pb-[env(safe-area-inset-bottom)]">
               <a
                 href="#rooms"
                 className="inline-flex h-12 sm:h-14 min-w-[220px] px-7 sm:px-8 items-center justify-center rounded-md bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg transition-transform will-change-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"

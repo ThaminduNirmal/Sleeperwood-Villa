@@ -12,7 +12,7 @@ export default function RoomCard({ room }) {
   const [range, setRange] = useState({ from: undefined, to: undefined });
   const [idx, setIdx] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [showCal, setShowCal] = useState(false);
+  const [showCal, setShowCal] = useState(true);
   const [CalendarComp, setCalendarComp] = useState(null);
   const img = room.images && room.images[0];
   const safeSrc = img ? encodeURI(img) : null;
@@ -26,28 +26,14 @@ export default function RoomCard({ room }) {
   function prev(e){ if (e) e.stopPropagation(); setIdx(function(v){ return (v - 1 + (room.images?.length || 1)) % (room.images?.length || 1); }); }
   function jump(e, i){ if (e) e.stopPropagation(); setIdx(i); }
 
-  // Lazy-load calendar only when needed (click on mobile, auto on md+)
+  // Lazy-load calendar on mount
   useEffect(function(){
-    function decide() {
-      const wide = window.matchMedia("(min-width: 768px)").matches;
-      setShowCal(wide);
-      if (wide && !CalendarComp) {
-        const Comp = dynamic(() => import("@/components/availability-calendar"), { ssr: false });
-        setCalendarComp(() => Comp);
-      }
-    }
-    decide();
-    window.addEventListener("resize", decide);
-    return function(){ window.removeEventListener("resize", decide); };
-  }, [CalendarComp]);
-
-  function revealCalendar() {
     if (!CalendarComp) {
       const Comp = dynamic(() => import("@/components/availability-calendar"), { ssr: false });
       setCalendarComp(() => Comp);
     }
     setShowCal(true);
-  }
+  }, [CalendarComp]);
 
   return (
     <Card className="overflow-hidden p-0">
@@ -130,18 +116,9 @@ export default function RoomCard({ room }) {
           {room.vibe.split(" • ").map(function(bit, i){ return (<li key={i} className="leading-relaxed">• {bit}</li>); })}
         </ul>
         <div className="mt-4">
-          {showCal && CalendarComp ? (
+          {CalendarComp ? (
             <CalendarComp roomId={room.id} value={range} onChange={setRange} />
-          ) : (
-            <button
-              type="button"
-              onClick={revealCalendar}
-              className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm bg-white/70 backdrop-blur hover:bg-white/90 transition-colors"
-              aria-label="Select dates"
-            >
-              Select dates
-            </button>
-          )}
+          ) : null}
         </div>
       </CardContent>
       <CardFooter className="p-0">

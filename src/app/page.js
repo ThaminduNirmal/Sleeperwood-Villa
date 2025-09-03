@@ -8,8 +8,8 @@ import HeroImmersive from "@/components/hero-immersive";
 // Below-the-fold sections – dynamically imported to reduce initial JS/LCP
 const ValueCards = dynamic(() => import("@/components/value-cards"), { loading: () => <div className="mx-auto max-w-6xl px-4 py-12" /> });
 const NearbyExperiences = dynamic(() => import("@/components/nearby-experiences"), { loading: () => <div className="mx-auto max-w-6xl px-4 py-12" /> });
-const SectionLocation = dynamic(() => import("@/components/section-location"), { ssr: false, loading: () => <div className="mx-auto max-w-7xl px-4 py-12" /> });
-const SectionGallery = dynamic(() => import("@/components/section-gallery"), { ssr: false, loading: () => <div className="mx-auto max-w-7xl px-4 py-12" /> });
+const SectionLocation = dynamic(() => import("@/components/section-location"), { loading: () => <div className="mx-auto max-w-7xl px-4 py-12" /> });
+const SectionGallery = dynamic(() => import("@/components/section-gallery"), { loading: () => <div className="mx-auto max-w-7xl px-4 py-12" /> });
 const ReviewsStrip = dynamic(() => import("@/components/reviews-strip"), { loading: () => <div className="mx-auto max-w-6xl px-4 pb-16" /> });
 const SectionContact = dynamic(() => import("@/components/section-contact"), { loading: () => <div className="mx-auto max-w-6xl px-4 py-12" /> });
 

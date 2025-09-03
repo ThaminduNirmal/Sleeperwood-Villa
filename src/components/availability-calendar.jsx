@@ -72,7 +72,7 @@ export default function AvailabilityCalendar({ roomId, value, onChange }) {
 
       {/* Mobile: collapsed view with button */}
       <div className="md:hidden p-3">
-        <Button onClick={function(){ setMobileOpen(true); }} className="w-full bg-[var(--primary)] text-[var(--primary-foreground)]">Select dates</Button>
+        <Button onClick={function(){ setMobileOpen(true); }} className="w-full bg-[#ffcc00] text-black hover:brightness-110">Select dates</Button>
         <div className="mt-2 text-xs text-muted-foreground flex items-center justify-between">
           <span>{error ? "Could not load availability" : "Live availability on Booking.com"}</span>
           {range?.from && range?.to ? <span>{diffDays(range.from, range.to)} nights</span> : null}
