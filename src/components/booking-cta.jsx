@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { buildBookingUrl } from "@/lib/bookingLink";
 
-export default function BookingCta({ checkIn = "", checkOut = "", adults = 2, childrenAges = [], rooms = 1, variant = "primary", className = "", children = "Check availability on Booking.com" }) {
+export default function BookingCta({ checkIn = "", checkOut = "", adults = 2, childrenAges = [], rooms = 1, variant = "primary", className = "", children = "Book on Booking.com" }) {
   function onClick() {
     const url = buildBookingUrl({ checkIn, checkOut, adults, childrenAges, rooms });
     window.open(url, "_blank");

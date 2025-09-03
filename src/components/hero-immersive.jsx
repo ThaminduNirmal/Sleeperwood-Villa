@@ -14,11 +14,11 @@ export default function HeroImmersive() {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/40" />
       <div className="relative z-10 h-full">
-        <div className="relative mx-auto max-w-6xl h-full px-4 pt-28 md:pt-36">
+        <div className="relative mx-auto max-w-7xl h-full px-4 pt-28 md:pt-36">
           <div className="md:absolute md:bottom-16 md:left-4 lg:left-8 max-w-3xl transition-all duration-700" style={{ opacity: show ? 1 : 0, transform: show ? "translateY(0)" : "translateY(12px)" }}>
             <h1 className="text-white text-3xl md:text-5xl lg:text-7xl leading-tight font-semibold whitespace-nowrap" style={{ fontFamily: "var(--font-display)", textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>Unwind in wood and greenery.</h1>
             <p className="mt-4 text-white/90 text-lg md:text-xl lg:text-2xl max-w-2xl" style={{ textShadow: "0 2px 10px rgba(0,0,0,0.45)" }}>Moments from Unawatuna Beach.</p>

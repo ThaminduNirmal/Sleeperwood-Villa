@@ -2,8 +2,8 @@
 import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import BookingCta from "@/components/booking-cta";
-import AvailabilityCalendar from "@/components/availability-calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { buildBookingUrl } from "@/lib/bookingLink";
 import { BedDouble, Users, Snowflake, ShowerHead, Trees, Utensils, Wifi, DoorOpen, Shirt, ChevronLeft, ChevronRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -12,6 +12,8 @@ export default function RoomCard({ room }) {
   const [range, setRange] = useState({ from: undefined, to: undefined });
   const [idx, setIdx] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [showCal, setShowCal] = useState(false);
+  const [CalendarComp, setCalendarComp] = useState(null);
   const img = room.images && room.images[0];
   const safeSrc = img ? encodeURI(img) : null;
   function openBooking() {
@@ -23,6 +25,29 @@ export default function RoomCard({ room }) {
   function next(e){ if (e) e.stopPropagation(); setIdx(function(v){ return (v + 1) % (room.images?.length || 1); }); }
   function prev(e){ if (e) e.stopPropagation(); setIdx(function(v){ return (v - 1 + (room.images?.length || 1)) % (room.images?.length || 1); }); }
   function jump(e, i){ if (e) e.stopPropagation(); setIdx(i); }
+
+  // Lazy-load calendar only when needed (click on mobile, auto on md+)
+  useEffect(function(){
+    function decide() {
+      const wide = window.matchMedia("(min-width: 768px)").matches;
+      setShowCal(wide);
+      if (wide && !CalendarComp) {
+        const Comp = dynamic(() => import("@/components/availability-calendar"), { ssr: false });
+        setCalendarComp(() => Comp);
+      }
+    }
+    decide();
+    window.addEventListener("resize", decide);
+    return function(){ window.removeEventListener("resize", decide); };
+  }, [CalendarComp]);
+
+  function revealCalendar() {
+    if (!CalendarComp) {
+      const Comp = dynamic(() => import("@/components/availability-calendar"), { ssr: false });
+      setCalendarComp(() => Comp);
+    }
+    setShowCal(true);
+  }
 
   return (
     <Card className="overflow-hidden p-0">
@@ -105,11 +130,22 @@ export default function RoomCard({ room }) {
           {room.vibe.split(" • ").map(function(bit, i){ return (<li key={i} className="leading-relaxed">• {bit}</li>); })}
         </ul>
         <div className="mt-4">
-          <AvailabilityCalendar roomId={room.id} value={range} onChange={setRange} />
+          {showCal && CalendarComp ? (
+            <CalendarComp roomId={room.id} value={range} onChange={setRange} />
+          ) : (
+            <button
+              type="button"
+              onClick={revealCalendar}
+              className="inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm bg-white/70 backdrop-blur hover:bg-white/90 transition-colors"
+              aria-label="Select dates"
+            >
+              Select dates
+            </button>
+          )}
         </div>
       </CardContent>
       <CardFooter className="p-0">
-        <BookingCta className="w-full rounded-none rounded-b-xl" checkIn={range?.from ? range.from.toISOString().slice(0,10) : ""} checkOut={range?.to ? range.to.toISOString().slice(0,10) : ""}>See dates on Booking.com</BookingCta>
+        <BookingCta className="w-full rounded-none rounded-b-xl" checkIn={range?.from ? range.from.toISOString().slice(0,10) : ""} checkOut={range?.to ? range.to.toISOString().slice(0,10) : ""}>Book on Booking.com</BookingCta>
       </CardFooter>
     </Card>
   );

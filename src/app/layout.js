@@ -2,7 +2,6 @@ import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import BookingStickyBar from "@/components/booking-sticky-bar";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -34,10 +33,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased bg-background text-foreground`}>
+        <link rel="preload" as="image" href="/images/hero/605593870.jpg" />
         <Header />
         <main className="min-h-[70vh]">{children}</main>
         <Footer />
-        <BookingStickyBar />
         <Toaster richColors position="top-center" />
       </body>
     </html>
