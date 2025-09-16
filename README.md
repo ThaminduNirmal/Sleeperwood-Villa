@@ -77,6 +77,7 @@ ROOM_03_ICS_URL=https://ical.booking.com/v1/export?t=...
 ```
 
 Notes:
+- `ROOM_01_ICS_URL`, `ROOM_02_ICS_URL`, `ROOM_03_ICS_URL` are read server‑side by `src/lib/availabilityConfig.js` and used by the API in `src/app/api/availability/[roomId]/route.js`. Set them in Vercel → Project → Settings → Environment Variables (scope: All Environments). Do not use `NEXT_PUBLIC_*`.
 - `GOOGLE_SITE_VERIFICATION` is read by `src/app/layout.js` via `metadata.verification.google`.
 - No public env vars are required for the website runtime.
 
@@ -84,7 +85,7 @@ Notes:
 
 The app serves availability from Booking.com iCal feeds via a small API with caching.
 
-- iCal URLs live in: `src/lib/availabilityConfig.js`
+- iCal URLs come from server env vars, wired through: `src/lib/availabilityConfig.js`
 - API route: `GET /api/availability/:roomId`
 
 Example (with debug data):
@@ -100,6 +101,16 @@ Response shape:
 ```
 
 If you rotate Booking.com iCal tokens, update `src/lib/availabilityConfig.js` and redeploy.
+
+## Useful URLs
+
+- Site: `https://sleeperwoodvilla.com/`
+- robots.txt: `https://sleeperwoodvilla.com/robots.txt`
+- sitemap.xml: `https://sleeperwoodvilla.com/sitemap.xml`
+- Availability debug (prod):
+  - `https://sleeperwoodvilla.com/api/availability/room-01?debug=1`
+  - `https://sleeperwoodvilla.com/api/availability/room-02?debug=1`
+  - `https://sleeperwoodvilla.com/api/availability/room-03?debug=1`
 
 ## Booking CTA
 
@@ -127,6 +138,13 @@ After deploy, request indexing in Google Search Console:
 1. URL Inspection → `https://sleeperwoodvilla.com/` → Request indexing
 2. Re-inspect after a few minutes; favicon/brand queries can take 24–72 hours
 
+## Content updates
+
+- Rooms list and metadata: `src/lib/rooms.js`
+- Reviews data: `src/lib/reviews.js`
+- Hero and gallery assets: place under `public/images/...` and reference with absolute paths
+- Booking button label/behavior: `src/components/booking-cta.jsx`
+
 ## Images
 
 - Place images under `public/images/...` and reference with absolute paths (e.g. `/images/hero/605593870.jpg`).
@@ -142,6 +160,7 @@ Targets are defined in `scripts/area-manifest.json`.
 
 - Availability shows empty or errors:
   - Confirm iCal URLs in `src/lib/availabilityConfig.js`
+  - In production, verify env vars are present in Vercel (All Environments) and redeploy
   - Retry with `?refresh=1` and check server logs
 - Favicon not visible in SERP:
   - Ensure `/logo.PNG` is deployed and accessible
@@ -154,7 +173,12 @@ Targets are defined in `scripts/area-manifest.json`.
 Recommended: Vercel
 
 1. Push to GitHub/GitLab/Bitbucket and import the repo in Vercel
-2. Set env var `GOOGLE_SITE_VERIFICATION`
+2. Set env vars: `GOOGLE_SITE_VERIFICATION`, `ROOM_01_ICS_URL`, `ROOM_02_ICS_URL`, `ROOM_03_ICS_URL` (scope: All Environments)
 3. Deploy; validate `robots.txt` and `sitemap.xml` are reachable
-4. Request indexing in Google Search Console
+4. Verify availability endpoints return data (`/api/availability/room-01?debug=1`)
+5. Request indexing in Google Search Console
+
+## Security
+
+See `SECURITY.md` for vulnerability reporting and how secrets are handled. Booking.com iCal URLs are kept as server‑only env vars and are never exposed client‑side.
 
