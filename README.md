@@ -1,36 +1,160 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sleeperwood Villa — Website
 
-## Getting Started
+Production site: https://sleeperwoodvilla.com
 
-First, run the development server:
+Marketing site for Sleeperwood Villa built with Next.js App Router. It features live availability via Booking.com iCal, an inline calendar, SEO best‑practices (sitemap, robots, JSON‑LD), and performance optimizations for LCP/FCP.
+
+## Tech stack
+
+- Next.js 15 (App Router) with React 19
+- Tailwind CSS v4
+- Radix UI primitives + shadcn/ui components
+- Sonner toasts
+
+## Getting started
+
+Requirements: Node 18+ (Node 20 recommended), npm.
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the dev server (Turbopack):
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build and start:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Lint:
 
-## Learn More
+```bash
+npm run lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+public/            # static assets
+  images/          # hero, rooms, villa, area
+  logo.PNG         # site icon (favicon)
+src/
+  app/             # Next.js app router pages
+    api/availability/[roomId]/route.js  # Booking.com iCal → JSON API
+    robots.js      # robots.txt
+    sitemap.js     # sitemap.xml
+    layout.js      # global metadata, JSON-LD, favicon
+    page.js        # landing, lazy-loaded sections
+  components/      # UI components (calendar, cards, header, hero, etc.)
+  lib/             # utils, rooms config, booking link, iCal parser
+scripts/
+  fetch-area-images.mjs  # optional: fetch/process area photos
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment variables
 
-## Deploy on Vercel
+Create `.env.local` in the project root for local use (Vercel → Project Settings → Environment Variables in production):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+# Used for Google Search Console verification (read server-side)
+GOOGLE_SITE_VERIFICATION=xxxxxx
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Only needed if you use the area image fetch script
+PEXELS_API_KEY=your_pexels_api_key
+
+# Booking.com iCal (server-only) — do not commit tokens
+ROOM_01_ICS_URL=https://ical.booking.com/v1/export?t=...
+ROOM_02_ICS_URL=https://ical.booking.com/v1/export?t=...
+ROOM_03_ICS_URL=https://ical.booking.com/v1/export?t=...
+```
+
+Notes:
+- `GOOGLE_SITE_VERIFICATION` is read by `src/app/layout.js` via `metadata.verification.google`.
+- No public env vars are required for the website runtime.
+
+## Availability API (Booking.com iCal)
+
+The app serves availability from Booking.com iCal feeds via a small API with caching.
+
+- iCal URLs live in: `src/lib/availabilityConfig.js`
+- API route: `GET /api/availability/:roomId`
+
+Example (with debug data):
+
+```
+http://localhost:3000/api/availability/room-01?debug=1
+```
+
+Response shape:
+
+```json
+{ "roomId": "room-01", "booked": [{ "start": "YYYY-MM-DD", "end": "YYYY-MM-DD", "kind": "booked" | "closed" }] }
+```
+
+If you rotate Booking.com iCal tokens, update `src/lib/availabilityConfig.js` and redeploy.
+
+## Booking CTA
+
+The “Book on Booking.com” button opens a Booking.com search URL based on selected dates.
+- Code: `src/components/booking-cta.jsx`
+- URL builder: `src/lib/bookingLink.js`
+
+## Performance highlights
+
+- Inline hero poster preloaded in `layout.js` to improve LCP
+- Hero video `preload="none"` and gradient overlay
+- Below-the-fold sections lazy-loaded via dynamic imports in `src/app/page.js`
+- Room calendars cached and fetched on demand
+
+## SEO
+
+- Canonical URL and `metadataBase` in `src/app/layout.js`
+- Open Graph metadata and site name
+- JSON‑LD: `LodgingBusiness`, `Organization`, and `WebSite` (with alternate names “Sleeperwood” and “Sleeper wood”)
+- `src/app/robots.js` → robots.txt
+- `src/app/sitemap.js` → sitemap.xml
+- Favicon/icon configured to use `/logo.PNG` with explicit sizes
+
+After deploy, request indexing in Google Search Console:
+1. URL Inspection → `https://sleeperwoodvilla.com/` → Request indexing
+2. Re-inspect after a few minutes; favicon/brand queries can take 24–72 hours
+
+## Images
+
+- Place images under `public/images/...` and reference with absolute paths (e.g. `/images/hero/605593870.jpg`).
+- Optional: fetch/process area photos via Pexels/Unsplash/Wikipedia using the script:
+
+```bash
+PEXELS_API_KEY=... npm run fetch-area
+```
+
+Targets are defined in `scripts/area-manifest.json`.
+
+## Troubleshooting
+
+- Availability shows empty or errors:
+  - Confirm iCal URLs in `src/lib/availabilityConfig.js`
+  - Retry with `?refresh=1` and check server logs
+- Favicon not visible in SERP:
+  - Ensure `/logo.PNG` is deployed and accessible
+  - Wait for reindexing; request indexing again in GSC
+- Styles look off after upgrade:
+  - Clear browser cache and verify Tailwind v4 is installed
+
+## Deployment
+
+Recommended: Vercel
+
+1. Push to GitHub/GitLab/Bitbucket and import the repo in Vercel
+2. Set env var `GOOGLE_SITE_VERIFICATION`
+3. Deploy; validate `robots.txt` and `sitemap.xml` are reachable
+4. Request indexing in Google Search Console
+

@@ -9,6 +9,7 @@ export default function AvailabilityCalendar({ roomId, value, onChange }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [conflictDates, setConflictDates] = useState([]);
   useEffect(function() {
     let active = true;
     setLoading(true);
@@ -23,23 +24,31 @@ export default function AvailabilityCalendar({ roomId, value, onChange }) {
   const disabled = useMemo(function(){
     return function(date){
       var d = ymd(date);
-      // Disable past dates
       var today = ymd(new Date());
-      if (d < today) return true;
-      // Disable booked ranges (compare by Y-M-D to avoid timezone drift)
-      for (var i=0;i<booked.length;i++){
-        var r = booked[i];
-        if (d >= r.start && d < r.end) return true;
-      }
-      return false;
+      return d < today;
     };
-  }, [booked]);
+  }, []);
   const [internalRange, setInternalRange] = useState({ from: undefined, to: undefined });
   const range = value || internalRange;
   function handleSelect(next) {
     if (onChange) onChange(next);
     else setInternalRange(next);
-    if (next?.from && next?.to) setMobileOpen(false);
+    if (next?.from && next?.to) {
+      var dates = enumerateDates(next.from, next.to);
+      var conflicts = [];
+      for (var i=0;i<dates.length;i++){
+        var d = dates[i];
+        var dy = ymd(d);
+        for (var j=0;j<booked.length;j++){
+          var r = booked[j];
+          if (dy >= r.start && dy < r.end) { conflicts.push(new Date(d)); break; }
+        }
+      }
+      setConflictDates(conflicts);
+      setMobileOpen(false);
+    } else {
+      setConflictDates([]);
+    }
   }
   return (
     <div className="relative border rounded-lg overflow-hidden">
@@ -51,22 +60,13 @@ export default function AvailabilityCalendar({ roomId, value, onChange }) {
           onSelect={handleSelect}
           disabled={disabled}
           initialFocus
-          modifiers={{ booked: booked.filter(function(r){ return r.kind === "booked"; }), closed: booked.filter(function(r){ return r.kind === "closed"; }) }}
-          modifiersStyles={{
-            booked: { backgroundColor: "rgba(229,72,77,0.18)", color: "inherit" },
-            closed: { backgroundColor: "rgba(90,62,43,0.18)", color: "inherit" },
-          }}
+          modifiers={{ conflict: conflictDates }}
+          modifiersStyles={{ conflict: { backgroundColor: "rgba(255,80,80,0.40)", color: "inherit" } }}
           className="mx-auto"
         />
         <div className="px-3 pb-3 text-xs text-muted-foreground flex items-center justify-between">
-          <span>
-            {error ? "Could not load availability" : "Live availability on Booking.com"}
-          </span>
+          <span>{error ? "Could not load availability" : "Select your dates; unavailable days are highlighted."}</span>
           {range?.from && range?.to ? <span>{diffDays(range.from, range.to)} nights</span> : null}
-        </div>
-        <div className="px-3 pb-3 text-[10px] text-muted-foreground flex items-center gap-3">
-          <span className="inline-flex items-center gap-1"><span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: "rgba(229,72,77,0.35)" }} /> Booked</span>
-          <span className="inline-flex items-center gap-1"><span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: "rgba(90,62,43,0.35)" }} /> Closed</span>
         </div>
       </div>
 
@@ -74,7 +74,7 @@ export default function AvailabilityCalendar({ roomId, value, onChange }) {
       <div className="md:hidden p-3">
         <Button onClick={function(){ setMobileOpen(true); }} className="w-full bg-[#ffcc00] text-black hover:brightness-110">Select dates</Button>
         <div className="mt-2 text-xs text-muted-foreground flex items-center justify-between">
-          <span>{error ? "Could not load availability" : "Live availability on Booking.com"}</span>
+          <span>{error ? "Could not load availability" : "Select your dates; unavailable days are highlighted."}</span>
           {range?.from && range?.to ? <span>{diffDays(range.from, range.to)} nights</span> : null}
         </div>
       </div>
@@ -96,20 +96,13 @@ export default function AvailabilityCalendar({ roomId, value, onChange }) {
             onSelect={handleSelect}
             disabled={disabled}
             initialFocus
-            modifiers={{ booked: booked.filter(function(r){ return r.kind === "booked"; }), closed: booked.filter(function(r){ return r.kind === "closed"; }) }}
-            modifiersStyles={{
-              booked: { backgroundColor: "rgba(229,72,77,0.18)", color: "inherit" },
-              closed: { backgroundColor: "rgba(90,62,43,0.18)", color: "inherit" },
-            }}
+            modifiers={{ conflict: conflictDates }}
+            modifiersStyles={{ conflict: { backgroundColor: "rgba(255,80,80,0.40)", color: "inherit" } }}
             className="mx-auto"
           />
           <div className="text-xs text-muted-foreground flex items-center justify-between">
-            <span>{error ? "Could not load availability" : "Live availability on Booking.com"}</span>
+            <span>{error ? "Could not load availability" : "Select your dates; unavailable days are highlighted."}</span>
             {range?.from && range?.to ? <span>{diffDays(range.from, range.to)} nights</span> : null}
-          </div>
-          <div className="text-[10px] text-muted-foreground flex items-center gap-3 mt-1">
-            <span className="inline-flex items-center gap-1"><span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: "rgba(229,72,77,0.35)" }} /> Booked</span>
-            <span className="inline-flex items-center gap-1"><span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: "rgba(90,62,43,0.35)" }} /> Closed</span>
           </div>
         </DialogContent>
       </Dialog>
@@ -126,5 +119,18 @@ function ymd(date){
 function diffDays(a, b){
   var ms = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
   return Math.max(1, Math.round(ms / 86400000));
+}
+
+function enumerateDates(from, to){
+  // Inclusive of from, exclusive of to
+  if (!from || !to) return [];
+  var days = [];
+  var d = new Date(Date.UTC(from.getFullYear(), from.getMonth(), from.getDate()));
+  var end = new Date(Date.UTC(to.getFullYear(), to.getMonth(), to.getDate()));
+  while (d < end) {
+    days.push(new Date(d));
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return days;
 }
 
